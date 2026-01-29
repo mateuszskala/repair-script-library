@@ -83,24 +83,28 @@ try {
     $modifiedKey = @()
 
     # Make sure guest VM is shut down
-    $guestHyperVVirtualMachine = Get-VM -ErrorAction Continue -WarningAction Continue
-    $guestHyperVVirtualMachineName = $guestHyperVVirtualMachine.VMName
-    if ($guestHyperVVirtualMachine) {
-        if ($guestHyperVVirtualMachine.State -eq 'Running') {
-            Log-Output "Stopping nested guest VM $guestHyperVVirtualMachineName" | Tee-Object -FilePath $logFile -Append
-            try {
-                Stop-VM $guestHyperVVirtualMachine -ErrorAction Stop -Force
+    try{
+        $guestHyperVVirtualMachine = Get-VM -ErrorAction Continue -WarningAction Continue
+        $guestHyperVVirtualMachineName = $guestHyperVVirtualMachine.VMName
+        if ($guestHyperVVirtualMachine) {
+            if ($guestHyperVVirtualMachine.State -eq 'Running') {
+                Log-Output "Stopping nested guest VM $guestHyperVVirtualMachineName" | Tee-Object -FilePath $logFile -Append
+                try {
+                    Stop-VM $guestHyperVVirtualMachine -ErrorAction Stop -Force
+                }
+                catch {
+                    Log-Warning "Failed to stop nested guest VM $($guestHyperVVirtualMachineName), will continue script but may have limited success" | Tee-Object -FilePath $logFile -Append
+                }
+    
             }
-            catch {
-                Log-Warning "Failed to stop nested guest VM $($guestHyperVVirtualMachineName), will continue script but may have limited success" | Tee-Object -FilePath $logFile -Append
-            }
-
+        }
+        else {
+            Log-Output "No running nested guest VM, continuing" | Tee-Object -FilePath $logFile -Append
         }
     }
-    else {
-        Log-Output "No running nested guest VM, continuing" | Tee-Object -FilePath $logFile -Append
+    catch {
+        Log-Error "END: Script failed with error: $_" | Tee-Object -FilePath $logFile -Append
     }
-
     # Make sure the disk is online
     Log-Output "Bringing partition(s) online if present" | Tee-Object -FilePath $logFile -Append
     $disk = Get-Disk -ErrorAction Stop | Where-Object { $_.FriendlyName -eq 'Msft Virtual Disk' }
