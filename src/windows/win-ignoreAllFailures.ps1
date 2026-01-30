@@ -71,10 +71,10 @@ forEach ( $partitionGroup in $partitionlist | group DiskNumber )
         bcdedit /store $bcdPath /set $defaultId bootstatuspolicy IgnoreAllFailures
         Log-Info "Setting bcd default recoveryenabled to Off for $bcdPath"
         bcdedit /store $bcdPath /set $defaultId recoveryenabled Off
-        Log-Info "Setting bcd default osddevice to partition=C: for $bcdPath"
-        bcdedit /store $bcdPath /set $defaultId osdevice partition=C:
-        Log-Info "Setting bcd default device to partition=C: for $bcdPath"
-        bcdedit /store $bcdPath /set $defaultId device partition=C:
+        Log-Info "Setting bcd default osddevice to partition=\Device\HarddiskVolume1 for $bcdPath"
+        bcdedit /store $bcdPath /set $defaultId osdevice partition=\Device\HarddiskVolume1
+        Log-Info "Setting bcd default device to partition=\Device\HarddiskVolume1 for $bcdPath"
+        bcdedit /store $bcdPath /set $defaultId device partition=\Device\HarddiskVolume1
         Log-Info "Setting bcd bootmgr device to partition=\Device\HarddiskVolume1 for $bcdPath"
         bcdedit /store $bcdPath /set "{bootmgr}" device partition=\Device\HarddiskVolume1
         Log-Info "Successfully updated BCD store at $bcdPath"
