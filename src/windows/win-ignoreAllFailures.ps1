@@ -67,9 +67,18 @@ forEach ( $partitionGroup in $partitionlist | group DiskNumber )
         $defaultLine = $bcdout | Select-String 'displayorder' | select -First 1
         $defaultId = '{'+$defaultLine.ToString().Split('{}')[1] + '}'
         bcdedit /store $bcdPath /default $defaultId
-        bcdedit /store $bcdPath /set $defaultId  bootstatuspolicy IgnoreAllFailures
-        bcdedit /store $bcdPath /set $defaultId recoveryenabled No
-        
+        Log-Info "Setting bcd default bootstatuspolicy to IgnoreAllFailures for $bcdPath"
+        bcdedit /store $bcdPath /set $defaultId bootstatuspolicy IgnoreAllFailures
+        Log-Info "Setting bcd default recoveryenabled to Off for $bcdPath"
+        bcdedit /store $bcdPath /set $defaultId recoveryenabled Off
+        Log-Info "Setting bcd default osddevice to partition=C: for $bcdPath"
+        bcdedit /store $bcdPath /set $defaultId osdevice partition=C:
+        Log-Info "Setting bcd default device to partition=C: for $bcdPath"
+        bcdedit /store $bcdPath /set $defaultId device partition=C:
+        Log-Info "Setting bcd bootmgr device to partition=\Device\HarddiskVolume1 for $bcdPath"
+        bcdedit /store $bcdPath /set {bootmgr} device partition=\Device\HarddiskVolume1
+        Log-Info "Successfully updated BCD store at $bcdPath"
+
         return $STATUS_SUCCESS
     }
 }
