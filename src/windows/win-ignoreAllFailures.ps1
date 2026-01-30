@@ -50,7 +50,7 @@ forEach ( $partitionGroup in $partitionlist | group DiskNumber )
         #check if os loader was found on the previous partition already
         if (-not $isOsPath)
         {
-            $osPath = $drive + ':\windows\system32\winload.exe'
+            $osPath = $drive + ':\Windows\system32\winload.exe'
             $isOsPath = Test-Path $osPath
             if ($isOsPath)
             {
@@ -75,8 +75,8 @@ forEach ( $partitionGroup in $partitionlist | group DiskNumber )
         bcdedit /store $bcdPath /set $defaultId osdevice partition=C:
         Log-Info "Setting bcd default device to partition=C: for $bcdPath"
         bcdedit /store $bcdPath /set $defaultId device partition=C:
-        Log-Info "Setting bcd bootmgr device to partition=C: for $bcdPath"
-        bcdedit /store $bcdPath /set "{bootmgr}" device partition=C:
+        Log-Info "Setting bcd bootmgr device to partition=\Device\HarddiskVolume1 for $bcdPath"
+        bcdedit /store $bcdPath /set "{bootmgr}" device partition=\Device\HarddiskVolume1
         Log-Info "Successfully updated BCD store at $bcdPath"
 
         Log-Info "Fixing boot files on $bcdDrive"
