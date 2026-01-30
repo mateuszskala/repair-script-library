@@ -80,8 +80,8 @@ forEach ( $partitionGroup in $partitionlist | group DiskNumber )
         Log-Info "Successfully updated BCD store at $bcdPath"
 
         Log-Info "Fixing boot files on $bcdDrive"
-        bcdboot 'C:\Windows' /s $bcdDrive /f ALL"
-        
+        bcdboot 'C:\Windows' /s $bcdDrive /f ALL
+
         return $STATUS_SUCCESS
     }
 }
