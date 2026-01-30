@@ -76,7 +76,7 @@ forEach ( $partitionGroup in $partitionlist | group DiskNumber )
         Log-Info "Setting bcd default device to partition=C: for $bcdPath"
         bcdedit /store $bcdPath /set $defaultId device partition=C:
         Log-Info "Setting bcd bootmgr device to partition=\Device\HarddiskVolume1 for $bcdPath"
-        bcdedit /store $bcdPath /set {bootmgr} device partition=\Device\HarddiskVolume1
+        bcdedit /store $bcdPath /set "{bootmgr}" device partition=\Device\HarddiskVolume1
         Log-Info "Successfully updated BCD store at $bcdPath"
 
         return $STATUS_SUCCESS
