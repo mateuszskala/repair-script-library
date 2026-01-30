@@ -103,7 +103,7 @@ try {
         }
     }
     catch {
-        Log-Error "END: Script failed with error: $_" | Tee-Object -FilePath $logFile -Append
+        Log-Warning "Can't get VM, possible Hypervisor not installed: $_" | Tee-Object -FilePath $logFile -Append
     }
     # Make sure the disk is online
     Log-Output "Bringing partition(s) online if present" | Tee-Object -FilePath $logFile -Append
