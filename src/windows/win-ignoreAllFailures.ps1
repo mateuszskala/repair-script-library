@@ -68,6 +68,8 @@ forEach ( $partitionGroup in $partitionlist | group DiskNumber )
         $defaultId = '{'+$defaultLine.ToString().Split('{}')[1] + '}'
         bcdedit /store $bcdPath /default $defaultId
         bcdedit /store $bcdPath /set $defaultId  bootstatuspolicy IgnoreAllFailures
+        bcdedit /store $bcdPath /set $defaultId recoveryenabled No
+        
         return $STATUS_SUCCESS
     }
 }
