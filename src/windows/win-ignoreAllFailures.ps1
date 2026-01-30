@@ -79,6 +79,9 @@ forEach ( $partitionGroup in $partitionlist | group DiskNumber )
         bcdedit /store $bcdPath /set "{bootmgr}" device partition=\Device\HarddiskVolume1
         Log-Info "Successfully updated BCD store at $bcdPath"
 
+        Log-Info "Fixing boot files on $bcdDrive"
+        bcdboot 'C:\Windows' /s $bcdDrive /f ALL"
+        
         return $STATUS_SUCCESS
     }
 }
