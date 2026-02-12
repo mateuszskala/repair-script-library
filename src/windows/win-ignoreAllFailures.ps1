@@ -17,10 +17,12 @@ Log-Info $partitionlist
 $partitionGroup = $partitionlist | group DiskNumber 
 
 Log-Info '#03 - enumerate partitions to reconfigure boot cfg'
-Log-Info "#03 :Partition list grouped by disk number: $($partitionGroup | Format-List | Out-String)"
+Log-Info "#03 :Partition list grouped by disk number:"
+
 
 forEach ( $partitionGroup in $partitionlist | group DiskNumber )
 {
+    Log-Info "Processing Disk $($partitionGroup.Name) with partitions: $($partitionGroup.Group | select -ExpandProperty DriveLetter | Sort-Object | Out-String)"
     #reset paths for each part group (disk)
     $isBcdPath = $false
     $bcdPath = ''
