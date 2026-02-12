@@ -48,6 +48,8 @@ forEach ( $partitionGroup in $partitionlist | group DiskNumber )
                 $bcdDrive = $drive + ':'
                 $isBcdPath = Test-Path $bcdPath
             } 
+            if ($isBcdPath) { Log-Info "Found BCD store at $bcdPath" }
+            else { Log-Info "BCD store not found at drive $drive" }
         }        
 
         #check if os loader was found on the previous partition already
@@ -58,7 +60,11 @@ forEach ( $partitionGroup in $partitionlist | group DiskNumber )
             if ($isOsPath)
             {
                 $osDrive = $drive + ':'
+                Log-Info "Found OS loader at $osPath"
             }
+            else {
+                Log-Info "OS loader not found at drive $drive" 
+            }    
         }
     }
 
